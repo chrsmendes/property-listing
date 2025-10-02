@@ -1,4 +1,30 @@
 {
+  "name": "final-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "swagger": "node swagger.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrsmendes/property-listing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/chrsmendes/property-listing/issues"
+  },
+  "homepagen": "https://github.com/chrsmendes/property-listing#readme",
+  
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
