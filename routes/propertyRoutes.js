@@ -1,12 +1,14 @@
-    const model = require('../../models/propertyModel')
-    const propertyControlller = {}
+const model = require('../models/propertyModel')
+const router = express.Router();
+const { validateObjectId } = require('../middleware/validationMiddleware')
+const propertyRoute = {}
 
-    /* ***************************
-    * Delete controller using id
-    *****************************/
+/* ***************************
+* Delete controller Property using id
+*****************************/
 
-    propertyControlller.deleteProperty = async (req, res) => {
-        const { id } = req.body
+propertyRoute.deleteProperty = async (req, res) => {
+    const { id } = req.body
         try{
             const result = await model.findByIdAndDelete(id)
             if(result){
@@ -17,11 +19,15 @@
         } catch (error) {
             res.status(500).json({ Error: 'Error delting property' + error.message })
         }
-    }
+  }
 
-    propertyControlller.putProperty = async (req, res) => {
-        const id = req.params.id
-        const { title, description, address, propertyType, size, rooms, amenities, pricePerNight, maxGuests, images, rules, propertyManager } = req.body
+
+/* ***************************
+* Put controller Property using id
+*****************************/
+    
+propertyRoute.putProperty = async (req, res) => {
+    const { id ,title, description, address, propertyType, size, rooms, amenities, pricePerNight, maxGuests, images, rules, propertyManager } = req.body
 
         try{
             const result = await model.findByIdAndUpdate(id,{
@@ -40,6 +46,10 @@
 
         }
         
-    }
+}
 
-    module.exports = propertyControlller
+
+    router.delete('/:id', validateObjectId, propertyRoute.deleteProperty)
+    router.put('/:id', validateObjectId, propertyRoute.putProperty)
+
+    module.exports = propertyRoute
