@@ -29,6 +29,9 @@ app.get('/', (req, res, next) => {
 app.use(notFound);
 app.use(errorHandler);
 
+const propertyRoute = require('./routes/propertyRoutes');
+app.use('/properties', propertyRoute);
+
 mongodb.initDb((err, db) => {
   if (err) {
     console.error(err)
