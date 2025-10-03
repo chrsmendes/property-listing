@@ -16,6 +16,9 @@ app.get('/', (req, res, next) => {
   res.send('This is the home ')
 })
 
+const propertyRoute = require('./routes/propertyRoutes');
+app.use('/properties', propertyRoute);
+
 mongodb.initDb((err, db) => {
   if (err) {
     console.error(err)
