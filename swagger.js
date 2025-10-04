@@ -717,9 +717,9 @@ const doc = {
   }
 };
 
-const outputFile = './swagger.json';
+const outputFile = './swagger-output.json';
 
 // Add routes for API Endpoints
-const routes = ['./routes/index.js'];
+const routes = ['./routes/users.js', './routes/propertyRoutes.js'];
 
 swaggerAutogen(outputFile, routes, doc);
