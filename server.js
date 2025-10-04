@@ -3,7 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const swaggerUi = require("swagger-ui-express");
 
-const mongodb = require('./config/db/conection');
+const mongodb = require('./config/db/connection');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
 
 const app = express();
@@ -17,20 +17,31 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-const userRoutes = require('./routes/users');
-app.use('/users', userRoutes);
-
+/************* 
+* Routes
+**************/
+// Base Router
 app.get('/', (req, res, next) => {
   res.send('This is the home ')
 });
+
+// user Routes
+const userRoutes = require('./routes/users');
+app.use('/users', userRoutes);
+
+// property Routes
+const propertyRoute = require('./routes/propertyRoutes');
+app.use('/properties', propertyRoute);
+
+// api-docs Routes 
+const apiDocsRoute = require('./routes/apiDocs.js');
+app.use('/api-docs', apiDocsRoute);
+
 
 // Error handling middleware
 app.use(notFound);
 app.use(errorHandler);
 
-const propertyRoute = require('./routes/propertyRoutes');
-app.use('/properties', propertyRoute);
 
 mongodb.initDb((err, db) => {
   if (err) {
