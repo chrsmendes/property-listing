@@ -106,9 +106,62 @@ const createUser = asyncHandler(async (req, res) => {
   });
 });
 
+const updateUser = asyncHandler(async (req, res) => {
+  const { firstName, lastName, email, profileImage, role } = req.body;
+  const { id } = req.params;
+
+  // Find the user by their ID
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: 'User not found'
+    });
+  }
+
+  // Only update the provided fields
+  if (firstName) user.firstName = firstName;
+  if (lastName) user.lastName = lastName;
+  if (email) user.email = email.toLowerCase();
+  if (profileImage) user.profileImage = profileImage;
+  if (role) user.role = role;
+
+  const updatedUser = await user.save();
+
+  const userResponse = updatedUser.toObject();
+  delete userResponse.oauthId;
+
+  res.status(200).json({
+    success: true,
+    message: 'User updated successfully',
+    data: userResponse
+  });
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: 'User not found'
+    });
+  }
+
+  await User.findByIdAndDelete(id);
+
+  res.status(200).json({
+    success: true,
+    message: 'User deleted successfully'
+  });
+});
+
 // Route definitions
 router.get('/', validatePagination, getAllUsers);
 router.get('/:id', validateObjectId, getUserById);
 router.post('/', createUser);
+router.put('/:id', validateObjectId, updateUser);
+router.delete('/:id', validateObjectId, deleteUser);
 
 module.exports = router;
