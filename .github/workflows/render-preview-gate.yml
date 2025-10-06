@@ -1,0 +1,94 @@
+name: Render Preview Gate
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+jobs:
+  wait-for-render-preview:
+    name: Ensure Render preview deployment succeeded
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      statuses: read
+      checks: read
+    env:
+      STATUS_CONTEXTS: ${{ vars.RENDER_STATUS_CONTEXTS }}
+      POLL_INTERVAL: ${{ vars.RENDER_STATUS_POLL_INTERVAL }}
+      MAX_ATTEMPTS: ${{ vars.RENDER_STATUS_MAX_ATTEMPTS }}
+    steps:
+      - name: Wait for Render status checks
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+          REPO: ${{ github.repository }}
+          API_URL: ${{ github.api_url }}
+        run: |
+          set -eo pipefail
+
+          STATUS_CONTEXTS="${STATUS_CONTEXTS:-render/pr-preview}"
+          POLL_INTERVAL="${POLL_INTERVAL:-30}"
+          MAX_ATTEMPTS="${MAX_ATTEMPTS:-40}"
+
+          if ! command -v jq >/dev/null 2>&1; then
+            echo "jq is required but was not found on the runner."
+            exit 1
+          fi
+
+          IFS=',' read -ra contexts <<< "$STATUS_CONTEXTS"
+          if [ "${#contexts[@]}" -eq 0 ]; then
+            echo "No status contexts configured."
+            exit 1
+          fi
+
+          for ctx in "${contexts[@]}"; do
+            context="$(echo "$ctx" | xargs)"
+            if [ -z "$context" ]; then
+              continue
+            fi
+
+            echo "Waiting for Render status context: '$context'"
+
+            attempt=1
+            while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
+              response=$(curl -sS -H "Authorization: Bearer $GITHUB_TOKEN" \
+                -H "Accept: application/vnd.github+json" \
+                "$API_URL/repos/$REPO/commits/$SHA/status")
+
+              state=$(echo "$response" | jq -r --arg ctx "$context" '.statuses[] | select(.context == $ctx) | .state' | head -n1)
+              target_url=$(echo "$response" | jq -r --arg ctx "$context" '.statuses[] | select(.context == $ctx) | .target_url' | head -n1)
+
+              if [ "$state" = "success" ]; then
+                echo "Status '$context' succeeded."
+                if [ -n "$target_url" ] && [ "$target_url" != "null" ]; then
+                  echo "Preview URL: $target_url"
+                fi
+                break
+              fi
+
+              if [ "$state" = "failure" ] || [ "$state" = "error" ]; then
+                echo "Status '$context' reported state '$state'. Failing pipeline."
+                exit 1
+              fi
+
+              if [ "$attempt" -eq "$MAX_ATTEMPTS" ]; then
+                echo "Timed out waiting for status '$context'."
+                exit 1
+              fi
+
+              echo "Attempt $attempt/$MAX_ATTEMPTS: state='$state'. Retrying in ${POLL_INTERVAL}s."
+              attempt=$((attempt + 1))
+              sleep "$POLL_INTERVAL"
+            done
+
+            if [ "$attempt" -gt "$MAX_ATTEMPTS" ]; then
+              echo "Did not observe a successful status for '$context'."
+              exit 1
+            fi
+          done
+
+          echo "All configured Render statuses succeeded."
