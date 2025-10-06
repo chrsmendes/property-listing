@@ -20,12 +20,23 @@ jobs:
           max_attempts=30
 
           while [ $attempt -le $max_attempts ]; do
-            deployment_status=$(gh api repos/${{ github.repository }}/deployments \
-              --jq '[.[] | select(.ref == "${{ github.event.pull_request.head.sha }}")] | first' | jq -r '.statuses_url')
+            # Pega a lista de deployments para este repositório
+            deployments_json=$(gh api repos/${{ github.repository }}/deployments)
+            
+            echo "📦 [DEBUG] Deployments JSON completo:"
+            echo "$deployments_json" | jq '.'
+            
+            # Procura por deployment relacionado ao PR (por environment ou ref)
+            deployment_status_url=$(echo "$deployments_json" | jq -r --arg ref "${{ github.head_ref }}" --arg pr "${{ github.event.pull_request.number }}" '
+              ( (.[ ]? // []) | map(select(.ref == $ref or (.environment | test("pr-" + $pr; "i")))) | .[0] ).statuses_url // empty') || true
+            
+            if [ -n "$deployment_status_url" ]; then
+              # Pega os statuses (array) do deployment
+              statuses_json=$(gh api "$deployment_status_url")
+              
+              state=$(echo "$statuses_json" | jq -r '.[0].state // empty') || true
+              url=$(echo "$statuses_json" | jq -r '.[0].environment_url // empty') || true
 
-            if [ "$deployment_status" != "null" ]; then
-              state=$(gh api "$deployment_status" --jq '.[0].state')
-              url=$(gh api "$deployment_status" --jq '.[0].environment_url')
               if [ "$state" = "success" ]; then
                 echo "✅ Deployment concluído com sucesso!"
                 echo "🔗 Preview URL: $url"
@@ -33,6 +44,17 @@ jobs:
               elif [ "$state" = "failure" ] || [ "$state" = "error" ]; then
                 echo "❌ Deployment falhou com status: $state"
                 exit 1
+              fi
+            else
+              # Fallback: verificar commit status
+              commit_status_json=$(gh api repos/${{ github.repository }}/commits/${{ github.event.pull_request.head.sha }}/status)
+              
+              status_ctx=$(echo "$commit_status_json" | jq -r '.statuses[] | select(.context | test("render";"i")) | .state' | head -n1) || true
+              
+              if [ "$status_ctx" = "success" ]; then
+                preview_url=$(echo "$commit_status_json" | jq -r '.statuses[] | select(.context | test("render";"i")) | .target_url' | head -n1) || true
+                echo "✅ Deploy status succeeded (fallback). URL: $preview_url"
+                exit 0
               fi
             fi
 
