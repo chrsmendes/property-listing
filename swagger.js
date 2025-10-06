@@ -10,7 +10,7 @@ const doc = {
       url: 'https://github.com/chrsmendes/property-listing'
     }
   },
-  host: process.env.SWAGGER_HOST || 'localhost:3000',
+  host: process.env.SWAGGER_HOST || 'property-listing-a19g.onrender.com',
   schemes: process.env.NODE_ENV === 'production' ? ['https'] : ['http'],
   tags: [
     {
