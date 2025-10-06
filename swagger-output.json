@@ -9,7 +9,7 @@
       "url": "https://github.com/chrsmendes/property-listing"
     }
   },
-  "host": "localhost:3000",
+  "host": "property-listing-a19g.onrender.com",
   "basePath": "/",
   "tags": [
     {
@@ -30,7 +30,7 @@
     }
   ],
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/": {
