@@ -1,3 +1,4 @@
+const express = require('express');
 const model = require('../models/propertyModel')
 const router = express.Router();
 const { validateObjectId } = require('../middleware/validationMiddleware')
@@ -52,4 +53,4 @@ propertyRoute.putProperty = async (req, res) => {
     router.delete('/:id', validateObjectId, propertyRoute.deleteProperty)
     router.put('/:id', validateObjectId, propertyRoute.putProperty)
 
-    module.exports = propertyRoute
+    module.exports = router

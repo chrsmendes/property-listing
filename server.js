@@ -34,7 +34,7 @@ const propertyRoute = require('./routes/propertyRoutes');
 app.use('/properties', propertyRoute);
 
 // api-docs Routes 
-const apiDocsRoute = require('./routes/apiDocs.js');
+const apiDocsRoute = require('./routes/api-docs.js');
 app.use('/api-docs', apiDocsRoute);
 
 
