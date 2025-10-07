@@ -11,29 +11,21 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "tags": [
-    {
-      "name": "User",
-      "description": "Operations related to users"
-    },
-    {
-      "name": "Booking",
-      "description": "Operations related to bookings"
-    },
-    {
-      "name": "Property",
-      "description": "Operations related to properties"
-    },
-    {
-      "name": "Review",
-      "description": "Operations related to reviews"
-    }
-  ],
   "schemes": [
     "http"
   ],
   "paths": {
     "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users": {
       "get": {
         "tags": [
           "Users"
@@ -107,7 +99,7 @@
         }
       }
     },
-    "/{id}": {
+    "/users/{id}": {
       "get": {
         "tags": [
           "Users"
@@ -134,6 +126,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -156,6 +151,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
