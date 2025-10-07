@@ -96,6 +96,7 @@
       }
     },
     "/users/{id}": {
+    "/users/{id}": {
       "get": {
         "tags": [
           "Users"
