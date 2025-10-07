@@ -1,34 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Property Listing",
-    "description": "RESTful API for booking properties and reviews.",
-    "version": "1.0.0",
-    "contact": {
-      "name": "CSE341 Team 15",
-      "url": "https://github.com/chrsmendes/property-listing"
-    }
+    "title": "Users Api",
+    "description": "Users Api",
+    "version": "1.0.0"
   },
   "host": "property-listing-a19g.onrender.com",
   "basePath": "/",
-  "tags": [
-    {
-      "name": "User",
-      "description": "Operations related to users"
-    },
-    {
-      "name": "Booking",
-      "description": "Operations related to bookings"
-    },
-    {
-      "name": "Property",
-      "description": "Operations related to properties"
-    },
-    {
-      "name": "Review",
-      "description": "Operations related to reviews"
-    }
-  ],
   "schemes": [
     "https"
   ],
@@ -36,6 +14,19 @@
     "/": {
       "get": {
         "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Get all users from database",
         "parameters": [
           {
             "name": "page",
@@ -49,23 +40,67 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad Request"
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Create a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "profileImage": {
+                  "example": "any"
+                },
+                "role": {
+                  "example": "any"
+                },
+                "oauthProvider": {
+                  "example": "any"
+                },
+                "oauthId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "201": {
+            "description": "Created"
+          },
+          "409": {
+            "description": "Conflict"
           }
         }
       }
     },
-    "/{id}": {
+    "/users/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Get a single user by ID",
         "parameters": [
           {
             "name": "id",
@@ -75,29 +110,71 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad Request"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
       "put": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Update a user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "profileImage": {
+                  "example": "any"
+                },
+                "role": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Update a user",
         "parameters": [
           {
             "name": "id",
@@ -107,2418 +184,228 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/properties/": {
+      "get": {
+        "tags": [
+          "Properties"
+        ],
+        "description": "Get all properties from database",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Properties"
+        ],
+        "description": "Create a new property",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "propertyType": {
+                  "example": "any"
+                },
+                "size": {
+                  "example": "any"
+                },
+                "rooms": {
+                  "example": "any"
+                },
+                "amenities": {
+                  "example": "any"
+                },
+                "pricePerNight": {
+                  "example": "any"
+                },
+                "maxGuests": {
+                  "example": "any"
+                },
+                "rules": {
+                  "example": "any"
+                },
+                "propertyManager": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/properties/{id}": {
+      "get": {
+        "tags": [
+          "Properties"
+        ],
+        "description": "Get a single property by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Properties"
+        ],
+        "description": "Delete a property",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Properties"
+        ],
+        "description": "Update a property",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "propertyType": {
+                  "example": "any"
+                },
+                "size": {
+                  "example": "any"
+                },
+                "rooms": {
+                  "example": "any"
+                },
+                "amenities": {
+                  "example": "any"
+                },
+                "pricePerNight": {
+                  "example": "any"
+                },
+                "maxGuests": {
+                  "example": "any"
+                },
+                "images": {
+                  "example": "any"
+                },
+                "rules": {
+                  "example": "any"
+                },
+                "propertyManager": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     }
   },
-  "definitions": {
-    "User": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "required": {
-          "type": "array",
-          "example": [
-            "firstName",
-            "lastName",
-            "email",
-            "oauthProvider",
-            "oauthId"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Unique identifier for the user"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109ca"
-                }
-              }
-            },
-            "firstName": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User first name"
-                },
-                "minLength": {
-                  "type": "number",
-                  "example": 3
-                },
-                "maxLength": {
-                  "type": "number",
-                  "example": 50
-                },
-                "example": {
-                  "type": "string",
-                  "example": "John"
-                }
-              }
-            },
-            "lastName": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User last name"
-                },
-                "minLength": {
-                  "type": "number",
-                  "example": 3
-                },
-                "maxLength": {
-                  "type": "number",
-                  "example": 50
-                },
-                "example": {
-                  "type": "string",
-                  "example": "Doe"
-                }
-              }
-            },
-            "email": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "email"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User email address"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "john.doe@example.com"
-                }
-              }
-            },
-            "profileImage": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "URL to user profile image"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                }
-              }
-            },
-            "role": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "enum": {
-                  "type": "array",
-                  "example": [
-                    "user",
-                    "property_manager",
-                    "admin"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User role"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "user"
-                }
-              }
-            },
-            "oauthProvider": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "enum": {
-                  "type": "array",
-                  "example": [
-                    "github",
-                    "facebook"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "OAuth provider"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "github"
-                }
-              }
-            },
-            "oauthId": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "OAuth provider ID"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "12345678"
-                }
-              }
-            },
-            "createdAt": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date-time"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User creation timestamp"
-                }
-              }
-            },
-            "updatedAt": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date-time"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User last update timestamp"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "UserUpdate": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "firstName": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User first name"
-                },
-                "minLength": {
-                  "type": "number",
-                  "example": 3
-                },
-                "maxLength": {
-                  "type": "number",
-                  "example": 50
-                },
-                "example": {
-                  "type": "string",
-                  "example": "John"
-                }
-              }
-            },
-            "lastName": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User last name"
-                },
-                "minLength": {
-                  "type": "number",
-                  "example": 3
-                },
-                "maxLength": {
-                  "type": "number",
-                  "example": 50
-                },
-                "example": {
-                  "type": "string",
-                  "example": "Doe"
-                }
-              }
-            },
-            "email": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "email"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User email address"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "john.doe@example.com"
-                }
-              }
-            },
-            "profileImage": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "URL to user profile image"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                }
-              }
-            },
-            "role": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "enum": {
-                  "type": "array",
-                  "example": [
-                    "user",
-                    "property_manager",
-                    "admin"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User role"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "user"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Address": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "required": {
-          "type": "array",
-          "example": [
-            "street",
-            "city",
-            "state",
-            "country",
-            "zipCode"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "street": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Street address"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "123 Main St"
-                }
-              }
-            },
-            "city": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "City"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "New York"
-                }
-              }
-            },
-            "state": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "State or province"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "NY"
-                }
-              }
-            },
-            "country": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Country"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "USA"
-                }
-              }
-            },
-            "zipCode": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "ZIP or postal code"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "10001"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Rooms": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "required": {
-          "type": "array",
-          "example": [
-            "bedrooms",
-            "bathrooms"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "bedrooms": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "integer"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Number of bedrooms"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 2
-                }
-              }
-            },
-            "bathrooms": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "integer"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Number of bathrooms"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 1
-                }
-              }
-            },
-            "livingRooms": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "integer"
-                },
-                "default": {
-                  "type": "number",
-                  "example": 1
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Number of living rooms"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 1
-                }
-              }
-            },
-            "kitchens": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "integer"
-                },
-                "default": {
-                  "type": "number",
-                  "example": 1
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Number of kitchens"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 1
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Amenities": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "wifi": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "WiFi available"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": true
-                }
-              }
-            },
-            "tv": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "TV available"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": true
-                }
-              }
-            },
-            "airConditioning": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Air conditioning available"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": false
-                }
-              }
-            },
-            "heating": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Heating available"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": true
-                }
-              }
-            },
-            "parking": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Parking available"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": true
-                }
-              }
-            },
-            "pool": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Pool available"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": false
-                }
-              }
-            },
-            "kitchen": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Kitchen available"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": true
-                }
-              }
-            },
-            "washer": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Washer available"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": false
-                }
-              }
-            },
-            "dryer": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Dryer available"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": false
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Rules": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "smokingAllowed": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Smoking allowed"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": false
-                }
-              }
-            },
-            "petsAllowed": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Pets allowed"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": true
-                }
-              }
-            },
-            "partiesAllowed": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "boolean"
-                },
-                "default": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Parties allowed"
-                },
-                "example": {
-                  "type": "boolean",
-                  "example": false
-                }
-              }
-            },
-            "checkInTime": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "default": {
-                  "type": "string",
-                  "example": "15:00"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Check-in time"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "15:00"
-                }
-              }
-            },
-            "checkOutTime": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "default": {
-                  "type": "string",
-                  "example": "11:00"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Check-out time"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "11:00"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Property": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "required": {
-          "type": "array",
-          "example": [
-            "title",
-            "description",
-            "address",
-            "propertyType",
-            "size",
-            "rooms",
-            "pricePerNight",
-            "maxGuests",
-            "propertyManager"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Unique identifier for the property"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109ca"
-                }
-              }
-            },
-            "title": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property title"
-                },
-                "minLength": {
-                  "type": "number",
-                  "example": 5
-                },
-                "maxLength": {
-                  "type": "number",
-                  "example": 100
-                },
-                "example": {
-                  "type": "string",
-                  "example": "Beautiful Downtown Apartment"
-                }
-              }
-            },
-            "description": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property description"
-                },
-                "minLength": {
-                  "type": "number",
-                  "example": 20
-                },
-                "example": {
-                  "type": "string",
-                  "example": "A beautiful and spacious downtown apartment with modern amenities"
-                }
-              }
-            },
-            "address": {
-              "$ref": "#/definitions/Address"
-            },
-            "propertyType": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "enum": {
-                  "type": "array",
-                  "example": [
-                    "apartment",
-                    "house",
-                    "studio",
-                    "villa",
-                    "cabin"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Type of property"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "apartment"
-                }
-              }
-            },
-            "size": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "number"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 10
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property size in square meters"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 85
-                }
-              }
-            },
-            "rooms": {
-              "$ref": "#/definitions/Rooms"
-            },
-            "amenities": {
-              "$ref": "#/definitions/Amenities"
-            },
-            "pricePerNight": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "number"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 10
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Price per night in USD"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 120
-                }
-              }
-            },
-            "maxGuests": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "integer"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Maximum number of guests"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 4
-                }
-              }
-            },
-            "images": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "array"
-                },
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Array of image URLs"
-                },
-                "example": {
-                  "type": "array",
-                  "example": [
-                    "https://example.com/image1.jpg",
-                    "https://example.com/image2.jpg"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            },
-            "rules": {
-              "$ref": "#/definitions/Rules"
-            },
-            "propertyManager": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property manager user ID"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109ca"
-                }
-              }
-            },
-            "createdAt": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date-time"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property creation timestamp"
-                }
-              }
-            },
-            "updatedAt": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date-time"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property last update timestamp"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "PropertyCreate": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "required": {
-          "type": "array",
-          "example": [
-            "title",
-            "description",
-            "address",
-            "propertyType",
-            "size",
-            "rooms",
-            "pricePerNight",
-            "maxGuests",
-            "propertyManager"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property title"
-                },
-                "minLength": {
-                  "type": "number",
-                  "example": 5
-                },
-                "maxLength": {
-                  "type": "number",
-                  "example": 100
-                },
-                "example": {
-                  "type": "string",
-                  "example": "Beautiful Downtown Apartment"
-                }
-              }
-            },
-            "description": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property description"
-                },
-                "minLength": {
-                  "type": "number",
-                  "example": 20
-                },
-                "example": {
-                  "type": "string",
-                  "example": "A beautiful and spacious downtown apartment with modern amenities"
-                }
-              }
-            },
-            "address": {
-              "$ref": "#/definitions/Address"
-            },
-            "propertyType": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "enum": {
-                  "type": "array",
-                  "example": [
-                    "apartment",
-                    "house",
-                    "studio",
-                    "villa",
-                    "cabin"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Type of property"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "apartment"
-                }
-              }
-            },
-            "size": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "number"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 10
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property size in square meters"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 85
-                }
-              }
-            },
-            "rooms": {
-              "$ref": "#/definitions/Rooms"
-            },
-            "amenities": {
-              "$ref": "#/definitions/Amenities"
-            },
-            "pricePerNight": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "number"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 10
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Price per night in USD"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 120
-                }
-              }
-            },
-            "maxGuests": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "integer"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Maximum number of guests"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 4
-                }
-              }
-            },
-            "images": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "array"
-                },
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Array of image URLs"
-                },
-                "example": {
-                  "type": "array",
-                  "example": [
-                    "https://example.com/image1.jpg",
-                    "https://example.com/image2.jpg"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            },
-            "rules": {
-              "$ref": "#/definitions/Rules"
-            },
-            "propertyManager": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property manager user ID"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109ca"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "PropertyUpdate": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property title"
-                },
-                "minLength": {
-                  "type": "number",
-                  "example": 5
-                },
-                "maxLength": {
-                  "type": "number",
-                  "example": 100
-                },
-                "example": {
-                  "type": "string",
-                  "example": "Beautiful Downtown Apartment"
-                }
-              }
-            },
-            "description": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property description"
-                },
-                "minLength": {
-                  "type": "number",
-                  "example": 20
-                },
-                "example": {
-                  "type": "string",
-                  "example": "A beautiful and spacious downtown apartment with modern amenities"
-                }
-              }
-            },
-            "address": {
-              "$ref": "#/definitions/Address"
-            },
-            "propertyType": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "enum": {
-                  "type": "array",
-                  "example": [
-                    "apartment",
-                    "house",
-                    "studio",
-                    "villa",
-                    "cabin"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Type of property"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "apartment"
-                }
-              }
-            },
-            "size": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "number"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 10
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property size in square meters"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 85
-                }
-              }
-            },
-            "rooms": {
-              "$ref": "#/definitions/Rooms"
-            },
-            "amenities": {
-              "$ref": "#/definitions/Amenities"
-            },
-            "pricePerNight": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "number"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 10
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Price per night in USD"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 120
-                }
-              }
-            },
-            "maxGuests": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "integer"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Maximum number of guests"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 4
-                }
-              }
-            },
-            "images": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "array"
-                },
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Array of image URLs"
-                },
-                "example": {
-                  "type": "array",
-                  "example": [
-                    "https://example.com/image1.jpg",
-                    "https://example.com/image2.jpg"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            },
-            "rules": {
-              "$ref": "#/definitions/Rules"
-            }
-          }
-        }
-      }
-    },
-    "Booking": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "required": {
-          "type": "array",
-          "example": [
-            "user",
-            "property",
-            "checkIn",
-            "checkOut",
-            "totalPrice"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Unique identifier for the booking"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109ca"
-                }
-              }
-            },
-            "user": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User ID who made the booking"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109ca"
-                }
-              }
-            },
-            "property": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property ID being booked"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109cb"
-                }
-              }
-            },
-            "checkIn": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Check-in date"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "2024-01-15"
-                }
-              }
-            },
-            "checkOut": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Check-out date (must be after check-in)"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "2024-01-20"
-                }
-              }
-            },
-            "totalPrice": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "number"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Total price for the booking"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 600
-                }
-              }
-            },
-            "status": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "enum": {
-                  "type": "array",
-                  "example": [
-                    "pending",
-                    "confirmed",
-                    "cancelled"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "default": {
-                  "type": "string",
-                  "example": "pending"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Booking status"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "confirmed"
-                }
-              }
-            },
-            "createdAt": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date-time"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Booking creation timestamp"
-                }
-              }
-            },
-            "updatedAt": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date-time"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Booking last update timestamp"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "BookingCreate": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "required": {
-          "type": "array",
-          "example": [
-            "user",
-            "property",
-            "checkIn",
-            "checkOut",
-            "totalPrice"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "user": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User ID who made the booking"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109ca"
-                }
-              }
-            },
-            "property": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property ID being booked"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109cb"
-                }
-              }
-            },
-            "checkIn": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Check-in date"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "2024-01-15"
-                }
-              }
-            },
-            "checkOut": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Check-out date (must be after check-in)"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "2024-01-20"
-                }
-              }
-            },
-            "totalPrice": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "number"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Total price for the booking"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 600
-                }
-              }
-            },
-            "status": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "enum": {
-                  "type": "array",
-                  "example": [
-                    "pending",
-                    "confirmed",
-                    "cancelled"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Booking status"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "pending"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "BookingUpdate": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "checkIn": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Check-in date"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "2024-01-15"
-                }
-              }
-            },
-            "checkOut": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Check-out date (must be after check-in)"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "2024-01-20"
-                }
-              }
-            },
-            "totalPrice": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "number"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Total price for the booking"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 600
-                }
-              }
-            },
-            "status": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "enum": {
-                  "type": "array",
-                  "example": [
-                    "pending",
-                    "confirmed",
-                    "cancelled"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Booking status"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "confirmed"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Review": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "required": {
-          "type": "array",
-          "example": [
-            "user",
-            "property",
-            "rating"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Unique identifier for the review"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109ca"
-                }
-              }
-            },
-            "user": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User ID who wrote the review"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109ca"
-                }
-              }
-            },
-            "property": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property ID being reviewed"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109cb"
-                }
-              }
-            },
-            "rating": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "integer"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "maximum": {
-                  "type": "number",
-                  "example": 5
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Rating from 1 to 5 stars"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 4
-                }
-              }
-            },
-            "comment": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "maxLength": {
-                  "type": "number",
-                  "example": 300
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Review comment (max 300 characters)"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "Great property with excellent amenities!"
-                }
-              }
-            },
-            "createdAt": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date-time"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Review creation timestamp"
-                }
-              }
-            },
-            "updatedAt": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "format": {
-                  "type": "string",
-                  "example": "date-time"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Review last update timestamp"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "ReviewCreate": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "required": {
-          "type": "array",
-          "example": [
-            "user",
-            "property",
-            "rating"
-          ],
-          "items": {
-            "type": "string"
-          }
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "user": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "User ID who wrote the review"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109ca"
-                }
-              }
-            },
-            "property": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Property ID being reviewed"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "60d0fe4f5311236168a109cb"
-                }
-              }
-            },
-            "rating": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "integer"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "maximum": {
-                  "type": "number",
-                  "example": 5
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Rating from 1 to 5 stars"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 4
-                }
-              }
-            },
-            "comment": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "maxLength": {
-                  "type": "number",
-                  "example": 300
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Review comment (max 300 characters)"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "Great property with excellent amenities!"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "ReviewUpdate": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "example": "object"
-        },
-        "properties": {
-          "type": "object",
-          "properties": {
-            "rating": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "integer"
-                },
-                "minimum": {
-                  "type": "number",
-                  "example": 1
-                },
-                "maximum": {
-                  "type": "number",
-                  "example": 5
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Rating from 1 to 5 stars"
-                },
-                "example": {
-                  "type": "number",
-                  "example": 4
-                }
-              }
-            },
-            "comment": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "maxLength": {
-                  "type": "number",
-                  "example": 300
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Review comment (max 300 characters)"
-                },
-                "example": {
-                  "type": "string",
-                  "example": "Great property with excellent amenities!"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  "schemas": [
+    "https"
+  ]
 }
