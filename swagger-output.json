@@ -136,6 +136,36 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "profileImage": {
+                  "example": "any"
+                },
+                "role": {
+                  "example": "any"
+                },
+                "oauthProvider": {
+                  "example": "any"
+                },
+                "oauthId": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
