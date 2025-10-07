@@ -9,7 +9,7 @@
       "url": "https://github.com/chrsmendes/property-listing"
     }
   },
-  "host": "property-listing-a19g.onrender.com",
+  "host": "localhost:3000",
   "basePath": "/",
   "tags": [
     {
@@ -30,12 +30,15 @@
     }
   ],
   "schemes": [
-    "https"
+    "http"
   ],
   "paths": {
     "/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Get all users from database",
         "parameters": [
           {
             "name": "page",
@@ -49,23 +52,67 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad Request"
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Create a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "profileImage": {
+                  "example": "any"
+                },
+                "role": {
+                  "example": "any"
+                },
+                "oauthProvider": {
+                  "example": "any"
+                },
+                "oauthId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "201": {
+            "description": "Created"
+          },
+          "409": {
+            "description": "Conflict"
           }
         }
       }
     },
     "/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Get a single user by ID",
         "parameters": [
           {
             "name": "id",
@@ -75,24 +122,14 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad Request"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -107,8 +144,36 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
