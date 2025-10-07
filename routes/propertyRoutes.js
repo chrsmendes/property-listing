@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const propertyModel = require('../models/userModel');
-const propertyRoute = {}
+
 const { 
   validateObjectId, 
   validatePagination 

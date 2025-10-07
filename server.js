@@ -16,7 +16,6 @@ const PORT = process.env.PORT || 3000
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 /************* 
 * Routes
 **************/
@@ -32,11 +31,9 @@ app.use('/users', userRoutes);
 // property Routes
 const propertyRoute = require('./routes/propertyRoutes');
 app.use('/properties', propertyRoute);
-
 // api-docs Routes 
 const apiDocsRoute = require('./routes/api-docs.js');
 app.use('/api-docs', apiDocsRoute);
-
 
 // Error handling middleware
 app.use(notFound);
