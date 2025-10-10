@@ -3,7 +3,8 @@ const router = express.Router();
 const Review = require('../models/reviewModel');
 const { 
   validateObjectId, 
-  validatePagination 
+  validatePagination,
+  validateReviewInput
 } = require('../middleware/validationMiddleware');
 const { 
   getAllReviews, 
@@ -41,6 +42,7 @@ router.get('/:id',
 router.post('/',
    /* #swagger.tags = ['Reviews']
      #swagger.description = 'Create a new Review' */
+  validateReviewInput,
   (req, res, next) => {
     try {
       createReview(req, res, next);
@@ -52,7 +54,8 @@ router.post('/',
 router.put('/:id',
     /* #swagger.tags = ['Reviews']
      #swagger.description = 'Update a Review' */
-     validateObjectId, 
+     validateObjectId,
+     validateReviewInput, 
      (req, res, next) => {
        try {
          updateReview(req, res, next);

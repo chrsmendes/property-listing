@@ -44,7 +44,60 @@ const validatePagination = (req, res, next) => {
   }
 };
 
+const validateReviewInput = (req, res, next) => {
+  const { user, property, rating, comment } = req.body;
+  
+  if (!user || !property || !rating || !comment) {
+    return res.status(400).json({
+      success: false,
+      message: 'User, property, rating, and comment are required'
+    });
+  }
+  
+  if (!mongoose.Types.ObjectId.isValid(user) || !mongoose.Types.ObjectId.isValid(property)) {
+    return res.status(400).json({
+      success: false, 
+      message: 'Invalid user or property ID format'
+    });
+  }
+  
+  if (typeof rating !== 'number' || rating < 1 || rating > 5) {
+    return res.status(400).json({
+      success: false,
+      message: 'Rating must be a number between 1 and 5'
+    });
+  }
+  
+  next();
+};
+
+const validateBookingDates = (req, res, next) => {
+  const { checkIn, checkOut } = req.body;
+  
+  const checkInDate = new Date(checkIn);
+  const checkOutDate = new Date(checkOut);
+  const today = new Date();
+  
+  if (checkInDate >= checkOutDate) {
+    return res.status(400).json({
+      success: false,
+      message: 'Check-out date must be after check-in date'
+    });
+  }
+  
+  if (checkInDate < today) {
+    return res.status(400).json({
+      success: false, 
+      message: 'Check-in date cannot be in the past'
+    });
+  }
+  
+  next();
+};
+
 module.exports = {
   validateObjectId,
-  validatePagination
+  validatePagination,
+  validateReviewInput,
+  validateBookingDates
 };

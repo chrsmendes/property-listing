@@ -3,7 +3,8 @@ const router = express.Router();
 const Booking = require('../models/bookingModel');
 const { 
   validateObjectId, 
-  validatePagination 
+  validatePagination ,
+  validateBookingDates
 } = require('../middleware/validationMiddleware');
 const { 
   getAllBookings, 
@@ -41,6 +42,7 @@ router.get('/:id',
 router.post('/',
    /* #swagger.tags = ['Bookings']
      #swagger.description = 'Create a new Booking' */
+  validateBookingDates,
   (req, res, next) => {
     try {
       createBooking(req, res, next);
@@ -53,6 +55,7 @@ router.put('/:id',
     /* #swagger.tags = ['Bookings']
      #swagger.description = 'Update a Booking' */
      validateObjectId, 
+     validateBookingDates,
      (req, res, next) => {
        try {
          updateBooking(req, res, next);

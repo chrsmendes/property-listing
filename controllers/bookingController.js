@@ -1,7 +1,4 @@
-const express = require('express');
 const Booking = require('../models/bookingModel');
-
-const router = express.Router();
 
 const getAllBookings = async (req, res, next) => {
   try {
@@ -68,7 +65,6 @@ const getBookingById = async (req, res, next) => {
 const createBooking = async (req, res, next) => {
   try {
     const { user, property, checkIn, checkOut, totalPrice, status, } = req.body;
-
 
     if (!user || !property || !checkIn || !checkOut) {
       return res.status(400).json({

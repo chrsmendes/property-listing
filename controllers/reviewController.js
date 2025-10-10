@@ -1,9 +1,4 @@
-const express = require('express');
-const model = require('../models/reviewModel')
-const router = express.Router();
-const { validateObjectId } = require('../middleware/validationMiddleware')
 const Review = require('../models/reviewModel');
-const { prototype } = require('form-data');
 
 /* ***************************
 * Delete controller Review using id
@@ -70,17 +65,17 @@ const createReview = async (req, res, next) => {
         rating,
         comment, } = req.body;
 
-      const review = new Review({
-        user,
-        property,
-        rating,
-        comment,
-      });
+    const review = new Review({
+      user,
+      property,
+      rating,
+      comment,
+    });
 
-      const savedReview = await review.save();
+    const savedReview = await review.save();
 
-      const reviewResponse = savedReview.toObject();
-      delete reviewResponse.oauthId;
+    const reviewResponse = savedReview.toObject();
+    delete reviewResponse.oauthId;
 
     res.status(201).json({
     success: true,
@@ -95,7 +90,7 @@ const createReview = async (req, res, next) => {
 const deleteReview = async (req, res, next) => {
   try {
     const { id } = req.params;
-    
+   
     const result = await Review.findByIdAndDelete(id);
     
     if(result){
@@ -121,13 +116,14 @@ const deleteReview = async (req, res, next) => {
     
 const updateReview = async (req, res, next) => {
   try {
-    const { id } = req.params; // usually from route like /properties/:id
+    const { id } = req.params; 
+
     const {user,
         property,
         rating,
         comment, } = req.body;
 
-    const result = await model.findByIdAndUpdate(
+    const result = await Review.findByIdAndUpdate(
       id,
       {
         user,
@@ -155,7 +151,4 @@ const updateReview = async (req, res, next) => {
   }
 };
 
-
-
-
-    module.exports = {updateReview, deleteReview, getAllReviews, getReviewById, createReview  }
+module.exports = {updateReview, deleteReview, getAllReviews, getReviewById, createReview  }
