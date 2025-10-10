@@ -4,12 +4,13 @@ const router = express.Router();
 const { validateObjectId } = require('../middleware/validationMiddleware')
 const Property = require('../models/propertyModel');
 const { prototype } = require('form-data');
+const { asyncHandler } = require('../middleware/errorMiddleware');
 
 /* ***************************
 * Delete controller Property using id
 *****************************/
 
-const getAllProperties = async (req, res) => {
+const getAllProperties = asyncHandler(async (req, res) => {
   const { page, limit } = req.pagination;
   const skip = (page - 1) * limit;
 
@@ -33,10 +34,10 @@ const getAllProperties = async (req, res) => {
       hasPrevPage: page > 1
     }
   });
-};
+});
 
 
-const getPropertyById = async (req, res) => {
+const getPropertyById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const property = await Property.findById(id)
@@ -53,9 +54,9 @@ const getPropertyById = async (req, res) => {
     success: true,
     data: property
   });
-};
+});
 
-const createProperty = async (req,res) => {
+const createProperty = asyncHandler(async (req,res) => {
     const {title,
         description,
         address,
@@ -92,31 +93,51 @@ const createProperty = async (req,res) => {
     message: 'Property created successfully',
     data: propertyResponse
   });
-}
+});
 
-const deleteProperty = async (req, res) => {
+const deleteProperty = asyncHandler(async (req, res) => {
     const { id } = req.params;
-        try{
-            const result = await Property.findByIdAndDelete(id)
-            if(result){
-                res.status(201).json({ message: 'Property was been deleted' })
-            } else {
-                res.status(400).json({ message: 'Error deleting property' })
-            }
-        } catch (error) {
-            res.status(500).json({ Error: 'Error deleting property' + error.message })
-        }
-  }
+    
+    const result = await Property.findByIdAndDelete(id);
+    
+    if(result){
+        res.status(200).json({ 
+            success: true,
+            message: 'Property has been deleted' 
+        });
+    } else {
+        res.status(404).json({ 
+            success: false,
+            message: 'Property not found' 
+        });
+    }
+});
 
 
 /* ***************************
 * Put controller Property using id
 *****************************/
     
-const putProperty = async (req, res) => {
-  try {
-    const { id } = req.params; // usually from route like /properties/:id
-    const {
+const putProperty = asyncHandler(async (req, res) => {
+  const { id } = req.params; // usually from route like /properties/:id
+  const {
+    title,
+    description,
+    address,
+    propertyType,
+    size,
+    rooms,
+    amenities,
+    pricePerNight,
+    maxGuests,
+    images,
+    rules,
+    propertyManager
+  } = req.body;
+
+  const result = await model.findByIdAndUpdate(
+    id,
+    {
       title,
       description,
       address,
@@ -129,42 +150,23 @@ const putProperty = async (req, res) => {
       images,
       rules,
       propertyManager
-    } = req.body;
+    },
+    { new: true, runValidators: true }
+  );
 
-    const result = await model.findByIdAndUpdate(
-      id,
-      {
-        title,
-        description,
-        address,
-        propertyType,
-        size,
-        rooms,
-        amenities,
-        pricePerNight,
-        maxGuests,
-        images,
-        rules,
-        propertyManager
-      },
-      { new: true, runValidators: true }
-    );
-
-    if (!result) {
-      return res.status(404).json({ message: 'Property not found' });
-    }
-
-    res.status(200).json({
-      message: 'Property has been updated successfully',
-      property: result
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: 'Error updating property',
-      error: error.message
+  if (!result) {
+    return res.status(404).json({ 
+      success: false,
+      message: 'Property not found' 
     });
   }
-};
+
+  res.status(200).json({
+    success: true,
+    message: 'Property has been updated successfully',
+    property: result
+  });
+});
 
 
 
