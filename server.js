@@ -37,6 +37,12 @@ app.use('/users', userRoutes);
 const propertyRoute = require('./routes/propertyRoutes');
 app.use('/properties', propertyRoute);
 
+const reviewRoute = require('./routes/reviewRoutes');
+app.use('/reviews', reviewRoute);
+
+const bookingRoute = require('./routes/bookingRoutes');
+app.use('/booking', bookingRoute);
+
 // api-docs Routes 
 const apiDocsRoute = require('./routes/api-docs.js');
 app.use('/api-docs', apiDocsRoute);

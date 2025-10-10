@@ -10,7 +10,7 @@ const doc = {
 };
 
 const outputFile = './swagger-output.json';
-const endpointFiles = ['./server.js']
+const endpointFiles = ['./server.js'];
 
 // Generate swagger documentation with error handling
 (async () => {
