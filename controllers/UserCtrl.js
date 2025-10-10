@@ -79,6 +79,22 @@ const createUser = asyncHandler(async (req, res) => {
     });
   }
 
+    if (!firstName || !lastName || !email) {
+    return res.status(400).json({
+      success: false,
+      message: 'firstName, lastName, and email are required'
+    });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid email format'
+    });
+  }
+
+
   const user = new User({
     firstName,
     lastName,
