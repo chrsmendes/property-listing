@@ -12,4 +12,13 @@ const doc = {
 const outputFile = './swagger-output.json';
 const endpointFiles = ['./server.js']
 
-swaggerAutogen(outputFile, endpointFiles, doc);
+// Generate swagger documentation with error handling
+(async () => {
+  try {
+    await swaggerAutogen(outputFile, endpointFiles, doc);
+    console.log('Swagger documentation generated successfully');
+  } catch (err) {
+    console.error('Error generating swagger documentation:', err);
+    process.exit(1);
+  }
+})();

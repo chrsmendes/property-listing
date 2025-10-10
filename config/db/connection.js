@@ -4,25 +4,35 @@ const mongoose = require('mongoose');
 let _db;
 
 const initDb = (callback) => {
-  if (_db) {
-    console.log('Db is already initialized! 😁')
-    return callback(null, _db);
+  try {
+    if (_db) {
+      console.log('Db is already initialized! 😁')
+      return callback(null, _db);
+    }
+    mongoose.connect(process.env.MONGO_DB_URL)
+      .then((client) => {
+        _db = client;
+        callback(null, _db)
+      })
+      .catch((err) => {
+        callback(err);
+      });
+  } catch (err) {
+    console.error('Error initializing database:', err);
+    callback(err);
   }
-   mongoose.connect(process.env.MONGO_DB_URL)
-    .then((client) => {
-      _db = client;
-      callback(null, _db)
-    })
-    .catch((err) => {
-      callback(err);
-    });
 };
 
 const getDb = () => {
-  if(!_db) {
-    throw Error('Db not initialized');
+  try {
+    if(!_db) {
+      throw Error('Db not initialized');
+    }
+    return _db;
+  } catch (err) {
+    console.error('Error getting database:', err);
+    throw err;
   }
-  return _db;
 }
 
 

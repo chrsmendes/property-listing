@@ -13,26 +13,60 @@ const property = require('../controllers/propertyController')
 router.get('/',
   /* #swagger.tags = ['Properties']
      #swagger.description = 'Get all properties from database' */
-  validatePagination, property.getAllProperties);
+  validatePagination, 
+  (req, res, next) => {
+    try {
+      property.getAllProperties(req, res, next);
+    } catch (err) {
+      next(err);
+    }
+  });
 
 router.get('/:id',
   /* #swagger.tags = ['Properties']
      #swagger.description = 'Get a single property by ID' */
-  validateObjectId, property.getPropertyById);
+  validateObjectId, 
+  (req, res, next) => {
+    try {
+      property.getPropertyById(req, res, next);
+    } catch (err) {
+      next(err);
+    }
+  });
 
 router.post('/',
    /* #swagger.tags = ['Properties']
     #swagger.description = 'Create a new property' */
-    property.createProperty);
+    (req, res, next) => {
+      try {
+        property.createProperty(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    });
 
 router.delete('/:id', 
     /* #swagger.tags = ['Properties']
     #swagger.description = 'Delete a property' */
-    validateObjectId, property.deleteProperty)
+    validateObjectId, 
+    (req, res, next) => {
+      try {
+        property.deleteProperty(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    })
 
 router.put('/:id', 
     /* #swagger.tags = ['Properties']
     #swagger.description = 'Update a property' */
-    validateObjectId, property.putProperty)
+    validateObjectId, 
+    (req, res, next) => {
+      try {
+        property.putProperty(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    })
 
 module.exports = router
