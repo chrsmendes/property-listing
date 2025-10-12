@@ -1,56 +1,72 @@
 const express = require('express');
-const model = require('../models/propertyModel')
 const router = express.Router();
-const { validateObjectId } = require('../middleware/validationMiddleware')
+const propertyModel = require('../models/userModel');
 const propertyRoute = {}
+const { 
+  validateObjectId, 
+  validatePagination 
+} = require('../middleware/validationMiddleware');
 
-/* ***************************
-* Delete controller Property using id
-*****************************/
+const property = require('../controllers/propertyController')
 
-propertyRoute.deleteProperty = async (req, res) => {
-    const { id } = req.body
-        try{
-            const result = await model.findByIdAndDelete(id)
-            if(result){
-                res.status(201).json({ message: 'Property was been deleted' })
-            } else {
-                res.status(400).json({ message: 'Error deleting property' })
-            }
-        } catch (error) {
-            res.status(500).json({ Error: 'Error delting property' + error.message })
-        }
-  }
+// Route definitions
+router.get('/',
+  /* #swagger.tags = ['Properties']
+     #swagger.description = 'Get all properties from database' */
+  validatePagination, 
+  (req, res, next) => {
+    try {
+      property.getAllProperties(req, res, next);
+    } catch (err) {
+      next(err);
+    }
+  });
 
+router.get('/:id',
+  /* #swagger.tags = ['Properties']
+     #swagger.description = 'Get a single property by ID' */
+  validateObjectId, 
+  (req, res, next) => {
+    try {
+      property.getPropertyById(req, res, next);
+    } catch (err) {
+      next(err);
+    }
+  });
 
-/* ***************************
-* Put controller Property using id
-*****************************/
-    
-propertyRoute.putProperty = async (req, res) => {
-    const { id ,title, description, address, propertyType, size, rooms, amenities, pricePerNight, maxGuests, images, rules, propertyManager } = req.body
+router.post('/',
+   /* #swagger.tags = ['Properties']
+    #swagger.description = 'Create a new property' */
+    (req, res, next) => {
+      try {
+        property.createProperty(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    });
 
-        try{
-            const result = await model.findByIdAndUpdate(id,{
-                title, description, address, propertyType, size, rooms, amenities, pricePerNight, maxGuests, images, rules, propertyManager
-            },
-            { 
-                new:true,
-            })
-            if(result){
-                res.status(201).json({ message: 'Property was been updated', property: result })
-            } else {
-                res.status(400).json({ message: 'Error updating the property' + property })
-            }
-        } catch (error) {
-            res.status(500).json({ Error: 'Error upadating property' + error.message })
+router.delete('/:id', 
+    /* #swagger.tags = ['Properties']
+    #swagger.description = 'Delete a property' */
+    validateObjectId, 
+    (req, res, next) => {
+      try {
+        property.deleteProperty(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    })
 
-        }
-        
-}
+router.put('/:id', 
+    /* #swagger.tags = ['Properties']
+    #swagger.description = 'Update a property' */
+    validateObjectId, 
+    (req, res, next) => {
+      try {
+        property.putProperty(req, res, next);
+      } catch (err) {
+        next(err);
+      }
+    })
 
-
-    router.delete('/:id', validateObjectId, propertyRoute.deleteProperty)
-    router.put('/:id', validateObjectId, propertyRoute.putProperty)
-
-    module.exports = router
+module.exports = router

@@ -22,7 +22,11 @@ app.use(express.urlencoded({ extended: true }));
 **************/
 // Base Router
 app.get('/', (req, res, next) => {
-  res.send('This is the home ')
+  try {
+    res.send('This is the home ')
+  } catch (err) {
+    next(err);
+  }
 });
 
 // user Routes
@@ -32,6 +36,12 @@ app.use('/users', userRoutes);
 // property Routes
 const propertyRoute = require('./routes/propertyRoutes');
 app.use('/properties', propertyRoute);
+
+const reviewRoute = require('./routes/reviewRoutes');
+app.use('/reviews', reviewRoute);
+
+const bookingRoute = require('./routes/bookingRoutes');
+app.use('/booking', bookingRoute);
 
 // api-docs Routes 
 const apiDocsRoute = require('./routes/api-docs.js');
@@ -45,10 +55,16 @@ app.use(errorHandler);
 
 mongodb.initDb((err, db) => {
   if (err) {
-    console.error(err)
+    console.error('Failed to initialize database:', err)
+    process.exit(1); // Exit with error code
   } else {
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`)
-    })
+    try {
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`)
+      })
+    } catch (err) {
+      console.error('Failed to start server:', err);
+      process.exit(1);
+    }
   }
 })
