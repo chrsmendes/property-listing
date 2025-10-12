@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 const swaggerUi = require("swagger-ui-express");
 
 const mongodb = require('./config/db/connection');
@@ -16,6 +17,10 @@ const PORT = process.env.PORT || 3000
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'favicon.ico'));
+});
 
 /************* 
 * Routes
