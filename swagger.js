@@ -1,12 +1,34 @@
+const dotenv = require('dotenv');
 const swaggerAutogen = require('swagger-autogen')();
 
+dotenv.config();
+
+const hostEnv = process.env.HOST || 'localhost';
+const portEnv = process.env.PORT;
+
+const normalizedHost = hostEnv.replace(/^https?:\/\//, '');
+const hostHasPort = /:\\d+$/.test(normalizedHost);
+const isLocalhost = ['localhost', '127.0.0.1', '0.0.0.0'].includes(normalizedHost);
+
+let swaggerHost = normalizedHost;
+
+if (!hostHasPort) {
+  if (isLocalhost) {
+    const port = portEnv || '3000';
+    swaggerHost = `${normalizedHost}:${port}`;
+  }
+} else {
+  swaggerHost = normalizedHost;
+}
+const swaggerScheme = process.env.SWAGGER_SCHEME || 'http';
+
 const doc = {
-    info:{
-        title: 'Users Api',
-        description: 'Users Api'
-    },
-    host: 'localhost:3000',
-    schemas: ['https']
+  info:{
+    title: 'Users Api',
+    description: 'Users Api'
+  },
+  host: swaggerHost,
+  schemes: [swaggerScheme]
 };
 
 const outputFile = './swagger-output.json';
