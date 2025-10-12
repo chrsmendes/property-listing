@@ -22,12 +22,18 @@ const getProtocol = (req) => {
 	return req.protocol;
 };
 
-router.get('/swagger.json', (req, res) => {
+router.get('/swagger-output.json', (req, res) => {
 	const protocol = getProtocol(req).toLowerCase() === 'https' ? 'https' : 'http';
 	const dynamicDoc = JSON.parse(JSON.stringify(swaggerDocument));
 
 	dynamicDoc.host = req.get('host');
 	dynamicDoc.schemes = [protocol];
+
+	// Remove default endpoints from documentation
+	if (dynamicDoc.paths) {
+		delete dynamicDoc.paths['/'];
+		delete dynamicDoc.paths['/favicon.ico'];
+	}
 
 	res.setHeader('Content-Type', 'application/json');
 	res.send(dynamicDoc);
@@ -36,7 +42,7 @@ router.get('/swagger.json', (req, res) => {
 // API Docs Route
 router.use('/', swaggerUi.serve, swaggerUi.setup(null, {
 	swaggerOptions: {
-		url: '/api-docs/swagger.json'
+		url: '/api-docs/swagger-output.json'
 	}
 }));
 
