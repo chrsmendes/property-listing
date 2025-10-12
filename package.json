@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose",
     "start": "node swagger.js && node server.js",
     "swagger": "node swagger.js",
     "dev": "nodemon server.js"
