@@ -24,8 +24,8 @@ const swaggerScheme = process.env.SWAGGER_SCHEME || 'http';
 
 const doc = {
   info:{
-    title: 'Users Api',
-    description: 'Users Api'
+    title: 'Property Listing API',
+    description: 'API for managing property listings',
   },
   host: swaggerHost,
   schemes: [swaggerScheme]
