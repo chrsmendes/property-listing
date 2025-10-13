@@ -3,9 +3,14 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const swaggerUi = require("swagger-ui-express");
+const User = require('./models/userModel');
+
 const passport = require('passport');
 const session = require('express-session');
 const GitHubStrategy = require('passport-github2').Strategy;
+const jwt = require('jsonwebtoken');
+
+
 
 const mongodb = require('./config/db/connection');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
@@ -23,7 +28,8 @@ app
   .use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    cookie: { secure: true }
   }))
   // this is the basic express session initializer
   .use(passport.initialize())
@@ -48,9 +54,41 @@ passport.use(new GitHubStrategy({
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
   callbackURL: process.env.CALLBACK_URL
 },
-  function (accessToken, refreshToken, profile, done) {
-    return done(null, profile);
-  }
+ async (accessToken, refreshToken, profile, done) => {
+      try {
+        
+        let user = await User.findOne({ oauthId: profile.id, oauthProvider: 'github' });
+
+        
+        if (!user) {
+          const email = profile.emails?.[0]?.value || `${profile.username}@github.com`;
+
+          user = await User.create({
+            firstName: profile.displayName?.split(' ')[0] || profile.username,
+            lastName: profile.displayName?.split(' ')[1] || ' ',
+            email,
+            profileImage: profile.photos?.[0]?.value || 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+            oauthProvider: 'github',
+            oauthId: profile.id,
+          });
+        }
+
+        // Generar token JWT
+        const token = jwt.sign(
+          { id: user._id },
+          process.env.JWT_SECRET,
+          { expiresIn: '7d' }
+        );
+
+        
+        user = user.toObject();
+        user.token = token;
+
+        done(null, user);
+      } catch (err) {
+        done(err, null);
+      }
+    }
 ));
 
 passport.serializeUser(function (user, done) {
