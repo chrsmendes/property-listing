@@ -6,7 +6,7 @@ const {
   validatePagination ,
   validateBookingDates
 } = require('../middleware/validationMiddleware');
-const isAuthenticated = require('../middleware/Authenticate');
+const {isAuthenticated, authMiddleware} = require('../middleware/Authenticate');
 const { 
   getAllBookings, 
   getBookingById, 
@@ -140,6 +140,7 @@ router.post('/',
 
 router.put('/:id',
     /* #swagger.tags = ['Bookings']
+       #swagger.security = [{ BearerAuth: [] }]
        #swagger.description = 'Update a Booking'
        #swagger.parameters['id'] = {
          in: 'path',
@@ -189,16 +190,12 @@ router.put('/:id',
     */
      validateObjectId, 
      validateBookingDates,
-     (req, res, next) => {
-       try {
-         updateBooking(req, res, next);
-       } catch (err) {
-         next(err);
-       }
-     });
+     authMiddleware,
+     updateBooking);
 
 router.delete('/:id',
     /* #swagger.tags = ['Bookings']
+       #swagger.security = [{ BearerAuth: [] }]
        #swagger.description = 'Delete a Booking by ID'
        #swagger.parameters['id'] = {
          in: 'path',
@@ -222,7 +219,7 @@ router.delete('/:id',
        }
     */
     validateObjectId, 
-    isAuthenticated,
+    authMiddleware,
     deleteBooking); 
 
 module.exports = router;

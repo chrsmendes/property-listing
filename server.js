@@ -58,13 +58,19 @@ passport.use(new GitHubStrategy({
       try {
         
         let user = await User.findOne({ oauthId: profile.id, oauthProvider: 'github' });
-
+        console.log({
+            firstName: profile.username,
+            lastName: profile.displayName?.split(' ')[1] || ' ',
+            profileImage: profile.photos?.[0]?.value || 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+            oauthProvider: 'github',
+            oauthId: profile.id,
+          });
         
         if (!user) {
           const email = profile.emails?.[0]?.value || `${profile.username}@github.com`;
 
           user = await User.create({
-            firstName: profile.displayName?.split(' ')[0] || profile.username,
+            firstName: profile.username,
             lastName: profile.displayName?.split(' ')[1] || ' ',
             email,
             profileImage: profile.photos?.[0]?.value || 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
@@ -84,6 +90,7 @@ passport.use(new GitHubStrategy({
         user = user.toObject();
         user.token = token;
 
+        
         done(null, user);
       } catch (err) {
         done(err, null);

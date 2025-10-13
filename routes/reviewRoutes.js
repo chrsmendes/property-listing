@@ -6,7 +6,7 @@ const {
   validatePagination,
   validateReviewInput
 } = require('../middleware/validationMiddleware');
-const isAuthenticated = require('../middleware/Authenticate');
+const { authMiddleware} = require('../middleware/Authenticate');
 const { 
   getAllReviews, 
   getReviewById, 
@@ -96,6 +96,7 @@ router.get('/:id',
 
 router.post('/',
    /* #swagger.tags = ['Reviews']
+       #swagger.security = [{ BearerAuth: [] }]
       #swagger.description = 'Create a new Review'
       #swagger.parameters['body'] = {
         in: 'body',
@@ -127,11 +128,12 @@ router.post('/',
       }
    */
   validateReviewInput,
-  isAuthenticated,
+  authMiddleware,
   createReview);
 
 router.put('/:id',
     /* #swagger.tags = ['Reviews']
+       #swagger.security = [{ BearerAuth: [] }]
        #swagger.description = 'Update a Review'
        #swagger.parameters['id'] = {
          in: 'path',
@@ -177,11 +179,12 @@ router.put('/:id',
     */
      validateObjectId,
      validateReviewInput, 
-     isAuthenticated,
+     authMiddleware,
      updateReview);
 
 router.delete('/:id',
     /* #swagger.tags = ['Reviews']
+       #swagger.security = [{ BearerAuth: [] }]
        #swagger.description = 'Delete a Review by ID'
        #swagger.parameters['id'] = {
          in: 'path',
@@ -205,7 +208,7 @@ router.delete('/:id',
        }
     */
     validateObjectId, 
-    isAuthenticated,
+    authMiddleware,
     deleteReview); 
 
 module.exports = router;

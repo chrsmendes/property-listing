@@ -8,7 +8,7 @@ const {
 } = require('../middleware/validationMiddleware');
 
 const property = require('../controllers/propertyController');
-const isAuthenticated = require('../middleware/Authenticate');
+const {isAuthenticated, authMiddleware} = require('../middleware/Authenticate');
 
 // Route definitions
 router.get('/',
@@ -262,11 +262,12 @@ router.post('/',
         }
       }
    */
-   isAuthenticated,
+    isAuthenticated,
     property.createProperty);
 
 router.delete('/:id', 
     /* #swagger.tags = ['Properties']
+       #swagger.security = [{ BearerAuth: [] }]
        #swagger.description = 'Delete a property by ID'
        #swagger.parameters['id'] = {
          in: 'path',
@@ -290,11 +291,12 @@ router.delete('/:id',
        }
     */
     validateObjectId, 
-    isAuthenticated,
+    authMiddleware,
     property.deleteProperty)
 
 router.put('/:id', 
     /* #swagger.tags = ['Properties']
+       #swagger.security = [{ BearerAuth: [] }]
        #swagger.description = 'Update a property with complete details'
        #swagger.parameters['id'] = {
          in: 'path',
@@ -409,7 +411,7 @@ router.put('/:id',
        }
     */
     validateObjectId, 
-    isAuthenticated,
+    authMiddleware,
     property.putProperty)
 
 module.exports = router

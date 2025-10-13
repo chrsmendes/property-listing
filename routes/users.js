@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
-const isAuthenticated = require('../middleware/Authenticate');
-const isAuthenticated = require('../middleware/Authenticate');
+const { authMiddleware } = require('../middleware/Authenticate');
+
 
 const { 
   validateObjectId, 
@@ -144,6 +144,7 @@ router.post('/',
 
 router.put('/:id',
     /* #swagger.tags = ['Users']
+       #swagger.security = [{ BearerAuth: [] }]
        #swagger.description = 'Update a user'
        #swagger.parameters['id'] = {
          in: 'path',
@@ -191,12 +192,13 @@ router.put('/:id',
        }
     */
      validateObjectId, 
-     isAuthenticated,
+     authMiddleware,
      updateUser  
      );
 
 router.delete('/:id',
     /* #swagger.tags = ['Users']
+       #swagger.security = [{ BearerAuth: [] }]
        #swagger.description = 'Delete a user by ID'
        #swagger.parameters['id'] = {
          in: 'path',
@@ -220,7 +222,7 @@ router.delete('/:id',
        }
     */
     validateObjectId, 
-    isAuthenticated,
+    authMiddleware,
     deleteUser); 
 
 module.exports = router;
