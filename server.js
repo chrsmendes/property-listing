@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 const swaggerUi = require("swagger-ui-express");
 const passport = require('passport');
 const session = require('express-session');
@@ -60,6 +61,10 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
+
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'favicon.ico'));
+});
 
 /************* 
 * Routes
