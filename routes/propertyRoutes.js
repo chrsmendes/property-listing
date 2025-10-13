@@ -7,7 +7,8 @@ const {
   validatePagination 
 } = require('../middleware/validationMiddleware');
 
-const property = require('../controllers/propertyController')
+const property = require('../controllers/propertyController');
+const isAuthenticated = require('../middleware/Authenticate');
 
 // Route definitions
 router.get('/',
@@ -85,13 +86,7 @@ router.get('/',
      }
   */
   validatePagination, 
-  (req, res, next) => {
-    try {
-      property.getAllProperties(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+  property.getAllProperties);
 
 router.get('/:id',
   /* #swagger.tags = ['Properties']
@@ -162,13 +157,8 @@ router.get('/:id',
      }
   */
   validateObjectId, 
-  (req, res, next) => {
-    try {
-      property.getPropertyById(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+  property.getPropertyById
+    );
 
 router.post('/',
    /* #swagger.tags = ['Properties']
@@ -272,13 +262,8 @@ router.post('/',
         }
       }
    */
-    (req, res, next) => {
-      try {
-        property.createProperty(req, res, next);
-      } catch (err) {
-        next(err);
-      }
-    });
+   isAuthenticated,
+    property.createProperty);
 
 router.delete('/:id', 
     /* #swagger.tags = ['Properties']
@@ -305,13 +290,8 @@ router.delete('/:id',
        }
     */
     validateObjectId, 
-    (req, res, next) => {
-      try {
-        property.deleteProperty(req, res, next);
-      } catch (err) {
-        next(err);
-      }
-    })
+    isAuthenticated,
+    property.deleteProperty)
 
 router.put('/:id', 
     /* #swagger.tags = ['Properties']
@@ -429,12 +409,7 @@ router.put('/:id',
        }
     */
     validateObjectId, 
-    (req, res, next) => {
-      try {
-        property.putProperty(req, res, next);
-      } catch (err) {
-        next(err);
-      }
-    })
+    isAuthenticated,
+    property.putProperty)
 
 module.exports = router

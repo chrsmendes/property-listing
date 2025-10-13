@@ -6,6 +6,7 @@ const {
   validatePagination,
   validateReviewInput
 } = require('../middleware/validationMiddleware');
+const isAuthenticated = require('../middleware/Authenticate');
 const { 
   getAllReviews, 
   getReviewById, 
@@ -55,13 +56,7 @@ router.get('/',
      }
   */
   validatePagination, 
-  (req, res, next) => {
-    try {
-      getAllReviews(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+  getAllReviews);
 
 router.get('/:id',
   /* #swagger.tags = ['Reviews']
@@ -97,13 +92,7 @@ router.get('/:id',
      }
   */
   validateObjectId, 
-  (req, res, next) => {
-    try {
-      getReviewById(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+ getReviewById);
 
 router.post('/',
    /* #swagger.tags = ['Reviews']
@@ -138,13 +127,8 @@ router.post('/',
       }
    */
   validateReviewInput,
-  (req, res, next) => {
-    try {
-      createReview(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+  isAuthenticated,
+  createReview);
 
 router.put('/:id',
     /* #swagger.tags = ['Reviews']
@@ -193,13 +177,8 @@ router.put('/:id',
     */
      validateObjectId,
      validateReviewInput, 
-     (req, res, next) => {
-       try {
-         updateReview(req, res, next);
-       } catch (err) {
-         next(err);
-       }
-     });
+     isAuthenticated,
+     updateReview);
 
 router.delete('/:id',
     /* #swagger.tags = ['Reviews']
@@ -226,12 +205,7 @@ router.delete('/:id',
        }
     */
     validateObjectId, 
-    (req, res, next) => {
-      try {
-        deleteReview(req, res, next);
-      } catch (err) {
-        next(err);
-      }
-    }); 
+    isAuthenticated,
+    deleteReview); 
 
 module.exports = router;

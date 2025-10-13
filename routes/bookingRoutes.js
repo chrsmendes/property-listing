@@ -6,6 +6,7 @@ const {
   validatePagination ,
   validateBookingDates
 } = require('../middleware/validationMiddleware');
+const isAuthenticated = require('../middleware/Authenticate');
 const { 
   getAllBookings, 
   getBookingById, 
@@ -57,13 +58,7 @@ router.get('/',
      }
   */
   validatePagination, 
-  (req, res, next) => {
-    try {
-      getAllBookings(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+  getAllBookings);
 
 router.get('/:id',
   /* #swagger.tags = ['Bookings']
@@ -101,13 +96,7 @@ router.get('/:id',
      }
   */
   validateObjectId, 
-  (req, res, next) => {
-    try {
-      getBookingById(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+  getBookingById);
 
 router.post('/',
    /* #swagger.tags = ['Bookings']
@@ -146,13 +135,8 @@ router.post('/',
       }
    */
   validateBookingDates,
-  (req, res, next) => {
-    try {
-      createBooking(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+  isAuthenticated,
+  createBooking);
 
 router.put('/:id',
     /* #swagger.tags = ['Bookings']
@@ -238,12 +222,7 @@ router.delete('/:id',
        }
     */
     validateObjectId, 
-    (req, res, next) => {
-      try {
-        deleteBooking(req, res, next);
-      } catch (err) {
-        next(err);
-      }
-    }); 
+    isAuthenticated,
+    deleteBooking); 
 
 module.exports = router;

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
 const isAuthenticated = require('../middleware/Authenticate');
+const isAuthenticated = require('../middleware/Authenticate');
+
 const { 
   validateObjectId, 
   validatePagination 
@@ -57,13 +59,8 @@ router.get('/',
      }
   */
   validatePagination, 
-  (req, res, next) => {
-    try {
-      getAllUsers(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+  getAllUsers  
+  );
 
 router.get('/:id',
   /* #swagger.tags = ['Users']
@@ -101,13 +98,8 @@ router.get('/:id',
      }
   */
   validateObjectId, 
-  (req, res, next) => {
-    try {
-      getUserById(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+  getUserById  
+  );
 
 router.post('/',
    /* #swagger.tags = ['Users']
@@ -146,13 +138,9 @@ router.post('/',
         }
       }
    */
-  (req, res, next) => {
-    try {
-      createUser(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  });
+  validateObjectId,
+  createUser  
+  );
 
 router.put('/:id',
     /* #swagger.tags = ['Users']
@@ -203,13 +191,9 @@ router.put('/:id',
        }
     */
      validateObjectId, 
-     (req, res, next) => {
-       try {
-         updateUser(req, res, next);
-       } catch (err) {
-         next(err);
-       }
-     });
+     isAuthenticated,
+     updateUser  
+     );
 
 router.delete('/:id',
     /* #swagger.tags = ['Users']
@@ -236,12 +220,7 @@ router.delete('/:id',
        }
     */
     validateObjectId, 
-    (req, res, next) => {
-      try {
-        deleteUser(req, res, next);
-      } catch (err) {
-        next(err);
-      }
-    }); 
+    isAuthenticated,
+    deleteUser); 
 
 module.exports = router;
