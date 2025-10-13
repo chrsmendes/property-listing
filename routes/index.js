@@ -23,7 +23,7 @@ router.get(
   (req, res) => {
     const token = req.user.token;
     console.log(req.user);
-     res.redirect(`${process.env.CALLBACK_URL}/api-docs?token=${token}`);
+     res.redirect(`${process.env.CALLBACK_URL}/api-docs`);
   }
   
 );
