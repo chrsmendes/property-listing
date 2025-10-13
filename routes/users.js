@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
+const isAuthenticated = require('../middleware/Authenticate');
 const { 
   validateObjectId, 
   validatePagination 
@@ -41,6 +42,7 @@ router.get('/:id',
 router.post('/',
    /* #swagger.tags = ['Users']
      #swagger.description = 'Create a new user' */
+    isAuthenticated,
   (req, res, next) => {
     try {
       createUser(req, res, next);
@@ -52,6 +54,7 @@ router.post('/',
 router.put('/:id',
     /* #swagger.tags = ['Users']
      #swagger.description = 'Update a user' */
+     isAuthenticated,
      validateObjectId, 
      (req, res, next) => {
        try {
@@ -64,6 +67,7 @@ router.put('/:id',
 router.delete('/:id',
     /* #swagger.tags = ['Users']
      #swagger.description = 'Update a user' */
+    isAuthenticated,
     validateObjectId, 
     (req, res, next) => {
       try {
