@@ -100,6 +100,7 @@ router.get('/:id',
 
 router.post('/',
    /* #swagger.tags = ['Bookings']
+       #swagger.security = [{ BearerAuth: [] }]
       #swagger.description = 'Create a new Booking'
       #swagger.parameters['body'] = {
         in: 'body',
@@ -135,7 +136,7 @@ router.post('/',
       }
    */
   validateBookingDates,
-  isAuthenticated,
+  authMiddleware,
   createBooking);
 
 router.put('/:id',
