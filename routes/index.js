@@ -22,8 +22,9 @@ router.get(
   passport.authenticate('github', { failureRedirect: '/api-docs' }),
   (req, res) => {
     const token = req.user.token;
+    const user = req.user;
     console.log(req.user);
-     res.redirect(`${process.env.CALLBACK_URL}/api-docs?token=${token}`);
+     res.send(user);
   }
   
 );
